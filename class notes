@@ -1,0 +1,31 @@
+require = old
+ESM import = new
+
+Arrow Functions 
+type = "module"
+
+Promises
+New Promise(...) = old
+resolve()
+reject()
+
+New promise(...) = new
+async
+await (is a stop sign)
+
+      async - function ~~~ (){...}
+Const ~~~~ = () => {...}
+             async
+
+Nested css
+    it is the new css that makes it so web browsers can interperate css a little better 
+    the css is written just like the html structure
+
+In this class we use packages and libraies interchangeably. 
+
+Framework is a structure to follow
+
+Express is a java script framework that we are going to be using in this class
+
+
+
