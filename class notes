@@ -1,3 +1,4 @@
+JAN 9, 2026
 require = old
 ESM import = new
 
@@ -28,4 +29,27 @@ Framework is a structure to follow
 Express is a java script framework that we are going to be using in this class
 
 
+JAN 12, 2026
+REQUEST RESPONSE LIFECYCLE:
+Client ----> Request{} - key:value, cont. (pass data around) (JSON objects)
+                    ->
+                        these are middleware functions
+                        f() [a]
+                        f() need to add some ccss/js
+                        f() check role, are you an admin
+                        f() if everything works, then it will build the HTML and then send it back to client
+
+you have the browser which is the client and then everything else is backend
+
+All semster we are only going to be using GET and POST(it is for processing data, aka forms) and REDIRECTS(example:logins)
+
+We are going to be building a MPA and multi page application
+
+SPA: bunch of flower pots and the server detects that someone wants the data so they start filling the pots (called hydration)
+manna map is an example of a SPA-a single page application (because react)
+- this will only call for something if it is missing somthing
+- github is a SPA
+
+
+API's return either JSON files or like a #statuscode
 
