@@ -53,3 +53,36 @@ manna map is an example of a SPA-a single page application (because react)
 
 API's return either JSON files or like a #statuscode
 
+JAN 14, 2026
+
+THE REQUEST RESPONSE CYCLE
+        Request
+
+Client           CAPP    0) .env (set up stuff) 1) finds out what the user wants: what file, what route... 2) loads the file (.html)
+
+          Res
+
+Request comes in, figures out what files you need, pulls the html. 
+
+Intro to routing - adding other routes 
+
+Templating engines: it allows you to take a html doc and it allows you to block out portions of the page
+
+HEADER ----------
+                |
+                |
+BODY/CONTENT    |-- partials    
+                |
+                |
+FOOTER ----------
+
+
+M odel     V iew     C ontroler
+                          1 (step one)
+            2?            |
+              -------------
+  2?                      |
+  -------------------------
+this makes it so you can work on a certain part
+
+PHP: pure templating engine based programing language
