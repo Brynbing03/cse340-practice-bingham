@@ -86,3 +86,29 @@ M odel     V iew     C ontroler
 this makes it so you can work on a certain part
 
 PHP: pure templating engine based programing language
+
+JAN 16, 2026
+WS (web soccet) 
+  (phone call, talk back and forth)
+  Server    (==========)      Client 
+                 ws (bi-directional)
+                
+      - there needs to be a little bit of JS on both sides(server and client side), on the server side, you can also have XML, Py ...ect.
+
+Our assignment
+JS into browser that makes it able to talk through to the ws (hang up signal only)
+
+restore.js
+
+Parent Service                              
+                                           kill
+                                            |
+VS cods -> Command (terminal) -> Node.js -> Dev
+   |
+OG parent
+        3000 sometimes 3001
+node restore.js # # # 
+
+h
+
+
