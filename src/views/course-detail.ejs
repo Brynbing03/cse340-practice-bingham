@@ -30,6 +30,19 @@
     </div>
   </div>
 
+  
+   <!-- here is my temporary debug block for query paraameters for the intro to middleware assignment... -->
+  <% if (Object.keys(queryParams).length > 0) { %>
+    <div class="query-debug">
+      <h3>Query Parameters (Debug)</h3>
+      <ul>
+        <% Object.keys(queryParams).forEach(key => { %>
+          <li><strong><%= key %>:</strong> <%= queryParams[key] %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+
   <div class="navigation">
     <p><a href="/catalog">&larr; Back to Course Catalog</a></p>
   </div>

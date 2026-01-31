@@ -41,6 +41,66 @@ app.use((req, res, next) => {
   next();
 });
 
+// this is for intro to middleware assignment
+
+/**
+ * Configure Express middleware
+ */
+
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, "public")));
+
+// Middleware to make NODE_ENV available to all templates
+app.use((req, res, next) => {
+  res.locals.NODE_ENV = (NODE_ENV || "production").toLowerCase();
+  next();
+});
+
+// 1) Request logging middleware
+app.use((req, res, next) => {
+  next();
+});
+
+
+// 2) Global data: current year
+app.use((req, res, next) => {
+  res.locals.currentYear = new Date().getFullYear();
+  next();
+});
+
+// 3) Time-based greeting middleware (store as a <p> tag string)
+app.use((req, res, next) => {
+  const currentHour = new Date().getHours();
+
+  let greetingText = "Hello!";
+  if (currentHour < 12) {
+    greetingText = "Good morning!";
+  } else if (currentHour < 18) {
+    greetingText = "Good afternoon!";
+  } else {
+    greetingText = "Good evening!";
+  }
+
+  // Stored as HTML so you can render with <%- greeting %>
+  res.locals.greeting = `<p class="greeting">${greetingText}</p>`;
+  next();
+});
+
+// 4) Random theme middleware
+app.use((req, res, next) => {
+  const themes = ["blue-theme", "green-theme", "red-theme"];
+  const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+  res.locals.bodyClass = randomTheme;
+  next();
+});
+
+// 5) Query parameter helper middleware
+app.use((req, res, next) => {
+  res.locals.queryParams = req.query || {};
+  next();
+});
+
+
 /**
  * Course data - place this after imports/variables, before routes
  */
@@ -171,6 +231,23 @@ app.get("/test-error", (req, res, next) => {
   err.status = 500;
   next(err);
 });
+
+// this is for the route-specific middleware and /demo route
+
+// Route-specific middleware that sets custom headers
+const addDemoHeaders = (req, res, next) => {
+  res.setHeader("X-Demo-Page", "true");
+  res.setHeader("X-Middleware-Demo", "Hello from route-specific middleware!");
+  next();
+};
+
+// Demo page route with header middleware
+app.get("/demo", addDemoHeaders, (req, res) => {
+  res.render("demo", {
+    title: "Middleware Demo Page",
+  });
+});
+
 
 /**
  * Catch-all route for 404 errors (MUST be after all real routes)
