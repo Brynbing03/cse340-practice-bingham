@@ -26,6 +26,8 @@
 </head>
 
 <body class="<%= bodyClass %>">
+
+  <!-- NAVIGATION HEADER (bubble) -->
   <header>
     <nav>
       <ul>
@@ -38,5 +40,11 @@
     </nav>
   </header>
 
-  <!-- Global greeting from middleware -->
-  <%- greeting %>
+  <!-- GREETING (separate bubble below header) -->
+  <% if (greeting) { %>
+    <div class="greeting-wrapper">
+      <div class="greeting">
+        <%- greeting %>
+      </div>
+    </div>
+  <% } %>
