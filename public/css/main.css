@@ -1,7 +1,4 @@
-/* =========================
-   Base layout & spacing
-   ========================= */
-
+/* some layout and spacing stuff, little different fonts*/
    html,
    body {
      background-color: #e7e3d8;
@@ -11,17 +8,14 @@
      color: #3a342e;
    }
    
-   /* Center page content + side breathing room */
-   main {
+/* trying out some certer spacing and thing idk if i like it all the way */
+main {
      max-width: 1000px;
      margin: 2rem auto;
-     padding: 0 2rem; /* left/right space */
+     padding: 0 2rem;
    }
    
-   /* =========================
-      Header & Navigation
-      ========================= */
-   
+/* header and nav thingz */
    header {
      max-width: 1100px;
      margin: 1.5rem auto 1rem;
@@ -58,10 +52,7 @@
      }
    }
    
-   /* =========================
-      Greeting (separate bubble)
-      ========================= */
-   
+/* the greeting bubble saying good morning, afternoon or evening! might chang this. idk if i like it...  */  
    .greeting-wrapper {
      max-width: 1100px;
      margin: 0 auto 1.5rem;
@@ -78,10 +69,7 @@
      font-weight: 500;
    }
    
-   /* =========================
-      Bubble cards (global)
-      ========================= */
-   
+/* the cards that are kinda bubbly */
    .card,
    .course-card,
    .section-card,
@@ -92,10 +80,7 @@
      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
    }
    
-   /* =========================
-      Course catalog spacing
-      ========================= */
-   
+/* the course catalog spacing a little bit */
    .course-list {
      display: grid;
      gap: 2rem;
@@ -136,17 +121,18 @@
   flex-direction: column;
   gap: 0.6rem;
   padding: 1.25rem;
+  margin-top: 20px;
+  border-radius: 18px;
+  background: #ffffff;
 }
-  
-  .section-time {
-    font-weight: 700;
-    font-size: 1.05rem;
-    color: #5a4632;
-  }
-  
-  .section-room,
-  .section-professor {
-    font-size: 0.95rem;
-    color: #6a5a48;
-  }
-  
+.section-time {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #5a4632;
+}
+
+.section-room,
+.section-professor {
+  font-size: 0.95rem;
+  color: #6a5a48;
+}
