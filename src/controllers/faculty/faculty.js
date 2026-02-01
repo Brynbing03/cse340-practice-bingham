@@ -4,12 +4,15 @@ const facultyListPage = (req, res) => {
   const sortBy = req.query.sort || "name";
   const { facultyArray, safeSort } = getSortedFaculty(sortBy);
 
+  
   res.render("faculty/list", {
     title: "Faculty Directory",
     faculty: facultyArray,
     currentSort: safeSort,
   });
 };
+
+
 
 const facultyDetailPage = (req, res, next) => {
   const facultyId = req.params.facultyId;

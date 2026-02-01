@@ -32,3 +32,5 @@ router.get("/faculty/:facultyId", facultyDetailPage);
 
 
 export default router;
+
+

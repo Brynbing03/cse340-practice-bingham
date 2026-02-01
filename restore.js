@@ -62,7 +62,6 @@ class PortKiller {
 
             return { pid, port };
         } catch (error) {
-            // Process not found is an expected case
             return null;
         }
     }

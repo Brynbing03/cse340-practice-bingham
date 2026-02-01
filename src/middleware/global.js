@@ -1,6 +1,4 @@
-/**
- * Helper function to get the current greeting based on the time of day.
- */
+// to get the current greeting depending on what time it is :)
 const getCurrentGreeting = () => {
     const currentHour = new Date().getHours();
     if (currentHour < 12) return "Good Morning!";
@@ -8,23 +6,20 @@ const getCurrentGreeting = () => {
     return "Good Evening!";
   };
   
-  /**
-   * Middleware to add local variables to res.locals for use in all templates.
-   */
   const addLocalVariables = (req, res, next) => {
-    // Current year for footer
+//haha the current year for footer
     res.locals.currentYear = new Date().getFullYear();
   
-    // Environment variable for templates (dev vs production)
+//environment variable for templates
     res.locals.NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
   
-    // Query params available to templates
+// query parameters that are available to templates
     res.locals.queryParams = { ...req.query };
   
-    // Greeting as plain text (templates decide how to wrap/display it)
+// i wanted the greeting as plain text
     res.locals.greeting = getCurrentGreeting();
   
-    // Random theme class
+    //random theme class
     const themes = ["blue-theme", "green-theme", "red-theme"];
     res.locals.bodyClass = themes[Math.floor(Math.random() * themes.length)];
   

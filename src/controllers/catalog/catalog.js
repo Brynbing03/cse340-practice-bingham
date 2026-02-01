@@ -4,7 +4,7 @@ import {
     getSortedSections,
   } from "../../models/catalog/catalog.js";
   
-  // Route handler for the course catalog list page
+  //this is the route handler for the course catalog list page
   const catalogPage = (req, res) => {
     const courses = getAllCourses();
     res.render("catalog", {
@@ -13,7 +13,7 @@ import {
     });
   };
   
-  // Route handler for individual course detail pages
+  //the route handler for individual course detail pages
   const courseDetailPage = (req, res, next) => {
     const courseId = req.params.courseId;
     const course = getCourseById(courseId);
