@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+<main>
+  <h1>Faculty Directory</h1>
+  <p>Browse our faculty and click a name to view full contact details.</p>
+
+  <div class="demo-section">
+    <strong>Sort:</strong>
+    <a href="/faculty?sort=name" class="<%= currentSort === 'name' ? 'active' : '' %>">Name</a> |
+    <a href="/faculty?sort=department" class="<%= currentSort === 'department' ? 'active' : '' %>">Department</a> |
+    <a href="/faculty?sort=title" class="<%= currentSort === 'title' ? 'active' : '' %>">Title</a>
+  </div>
+
+  <div class="course-list">
+    <% faculty.forEach(person => { %>
+      <div class="course-card">
+        <h3>
+          <a href="/faculty/<%= person.id %>"><%= person.name %></a>
+        </h3>
+        <p class="course-id"><%= person.department %> • <%= person.title %></p>
+        <p class="course-description">Office: <%= person.office %></p>
+      </div>
+    <% }) %>
+  </div>
+
+  <p style="margin-top: 2rem;">
+    <a href="/">&larr; Back to Home</a>
+  </p>
+</main>
+
+<%- include('../partials/footer') %>

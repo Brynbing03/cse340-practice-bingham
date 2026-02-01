@@ -4,22 +4,31 @@ import { addDemoHeaders } from "../middleware/demo/headers.js";
 import { catalogPage, courseDetailPage } from "./catalog/catalog.js";
 import { homePage, aboutPage, demoPage, testErrorPage, studentPage } from "./index.js";
 
+// here is my import for the faculty challenge
+import { facultyListPage, facultyDetailPage } from "./faculty/faculty.js";
+
+
 const router = Router();
 
-// Home and basic pages
+// routes for the home and basic chill pages
 router.get("/", homePage);
 router.get("/about", aboutPage);
 router.get("/student", studentPage);
 
 
-// Course catalog routes
+//course catalog routes
 router.get("/catalog", catalogPage);
 router.get("/catalog/:courseId", courseDetailPage);
 
-// Demo page with special middleware
+//the demo page with special middleware
 router.get("/demo", addDemoHeaders, demoPage);
 
-// Route to trigger a test error
+//route to set off a test error
 router.get("/test-error", testErrorPage);
+
+// factulty challenge routes
+router.get("/faculty", facultyListPage);
+router.get("/faculty/:facultyId", facultyDetailPage);
+
 
 export default router;
