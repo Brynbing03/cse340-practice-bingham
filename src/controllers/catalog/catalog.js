@@ -1,38 +1,50 @@
 import {
-    getAllCourses,
-    getCourseById,
-    getSortedSections,
-  } from "../../models/catalog/catalog.js";
-  
-  //this is the route handler for the course catalog list page
-  const catalogPage = (req, res) => {
-    const courses = getAllCourses();
+  getAllCourses,
+  getCourseBySlug,
+} from "../../models/catalog/courses.js";
+
+import {
+  getSectionsByCourseSlug,
+} from "../../models/catalog/catalog.js";
+
+// this is the route handler for the course catalog list page
+const catalogPage = async (req, res, next) => {
+  try {
+    const courses = await getAllCourses();
+
     res.render("catalog", {
       title: "Course Catalog",
       courses,
     });
-  };
-  
-  //the route handler for individual course detail pages
-  const courseDetailPage = (req, res, next) => {
-    const courseId = req.params.courseId;
-    const course = getCourseById(courseId);
-  
-    if (!course) {
-      const err = new Error(`Course ${courseId} not found`);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// the route handler for individual course detail pages
+const courseDetailPage = async (req, res, next) => {
+  try {
+    const courseSlug = req.params.slugId;
+    const sortBy = req.query.sort || "time";
+
+    const course = await getCourseBySlug(courseSlug);
+    const sections = await getSectionsByCourseSlug(courseSlug, sortBy);
+
+    if (Object.keys(course).length === 0) {
+      const err = new Error(`Course ${courseSlug} not found`);
       err.status = 404;
       return next(err);
     }
-  
-    const sortBy = req.query.sort || "time";
-    const sortedSections = getSortedSections(course.sections, sortBy);
-  
+
     res.render("course-detail", {
-      title: `${course.id} - ${course.title}`,
-      course: { ...course, sections: sortedSections },
+      title: `${course.courseCode} - ${course.name}`,
+      course,
+      sections,
       currentSort: sortBy,
     });
-  };
-  
-  export { catalogPage, courseDetailPage };
-  
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { catalogPage, courseDetailPage };

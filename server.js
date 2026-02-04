@@ -2,9 +2,12 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 
-//import MVC components
+// import MVC components
 import routes from "./src/controllers/routes.js";
 import { addLocalVariables } from "./src/middleware/global.js";
+
+//database setup and connection test
+import { setupDatabase, testConnection } from "./src/models/setup.js";
 
 // server config
 const __filename = fileURLToPath(import.meta.url);
@@ -13,10 +16,10 @@ const __dirname = path.dirname(__filename);
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 const PORT = process.env.PORT || 3000;
 
-//setin up the express server
+// setting up the express server
 const app = express();
 
-//express config
+// express config
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src/views"));
@@ -28,7 +31,7 @@ app.use(addLocalVariables);
 app.use("/", routes);
 
 //these are the error handlers
-//404 handler
+// 404 handler
 app.use((req, res, next) => {
   const err = new Error("Page Not Found");
   err.status = 404;
@@ -78,7 +81,10 @@ if (NODE_ENV.includes("dev")) {
     console.error("Failed to start WebSocket server:", error);
   }
 }
-// start server
-app.listen(PORT, () => {
+
+//start server with db init
+app.listen(PORT, async () => {
+  await setupDatabase();
+  await testConnection();
   console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });

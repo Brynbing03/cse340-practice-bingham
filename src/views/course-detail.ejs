@@ -2,9 +2,8 @@
 
 <main>
   <div class="course-header">
-    <h1><%= course.title %></h1>
-    <p class="course-meta"><%= course.id %> • <%= course.credits %> credits</p>
-    <p class="course-description"><%= course.description %></p>
+    <h1><%= course.courseCode %>: <%= course.name %></h1>
+    <p class="course-meta"><%= course.courseCode %> • <%= course.creditHours %> credits • <%= course.department %></p>
   </div>
 
   <div class="sections">
@@ -13,26 +12,33 @@
 
       <div class="sort-options">
         <span>Sort by: </span>
-        <a href="/catalog/<%= course.id %>" class="<%= currentSort === 'time' ? 'active' : '' %>">Time</a>
-        <a href="/catalog/<%= course.id %>?sort=professor" class="<%= currentSort === 'professor' ? 'active' : '' %>">Professor</a>
-        <a href="/catalog/<%= course.id %>?sort=room" class="<%= currentSort === 'room' ? 'active' : '' %>">Room</a>
+        <a href="/catalog/<%= course.slug %>?sort=time" class="<%= currentSort === 'time' ? 'active' : '' %>">Time</a>
+        <a href="/catalog/<%= course.slug %>?sort=professor" class="<%= currentSort === 'professor' ? 'active' : '' %>">Professor</a>
+        <a href="/catalog/<%= course.slug %>?sort=room" class="<%= currentSort === 'room' ? 'active' : '' %>">Room</a>
       </div>
     </div>
 
     <div class="section-list">
-      <% course.sections.forEach(section => { %>
-        <div class="section-card">
-          <div class="section-time"><%= section.time %></div>
-          <div class="section-room">Room: <%= section.room %></div>
-          <div class="section-professor">Instructor: <%= section.professor %></div>
-        </div>
-      <% }); %>
+      <% if (!sections || sections.length === 0) { %>
+        <p>No sections available.</p>
+      <% } else { %>
+        <% sections.forEach(section => { %>
+          <div class="section-card">
+            <div class="section-time"><%= section.time %></div>
+            <div class="section-room">Room: <%= section.room %></div>
+            <div class="section-professor">
+              Instructor:
+              <a href="/faculty/<%= section.professorSlug %>"><%= section.professor %></a>
+            </div>
+          </div>
+        <% }); %>
+      <% } %>
     </div>
   </div>
 
   
    <!-- here is my temporary debug block for query paraameters for the intro to middleware assignment... -->
-  <% if (Object.keys(queryParams).length > 0) { %>
+  <% if (typeof queryParams !== "undefined" && Object.keys(queryParams).length > 0) { %>
     <div class="query-debug">
       <h3>Query Parameters (Debug)</h3>
       <ul>

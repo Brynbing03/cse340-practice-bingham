@@ -1,99 +1,145 @@
-// Faculty data object
-const faculty = {
-    "brother-jack": {
-      name: "Brother Jack",
-      office: "STC 392",
-      phone: "208-496-1234",
-      email: "jackb@byui.edu",
-      department: "Computer Science",
-      title: "Associate Professor",
-    },
-    "sister-enkey": {
-      name: "Sister Enkey",
-      office: "STC 394",
-      phone: "208-496-2345",
-      email: "enkeys@byui.edu",
-      department: "Computer Science",
-      title: "Assistant Professor",
-    },
-    "brother-keers": {
-      name: "Brother Keers",
-      office: "STC 390",
-      phone: "208-496-3456",
-      email: "keersb@byui.edu",
-      department: "Computer Science",
-      title: "Professor",
-    },
-    "sister-anderson": {
-      name: "Sister Anderson",
-      office: "MC 301",
-      phone: "208-496-4567",
-      email: "andersons@byui.edu",
-      department: "Mathematics",
-      title: "Professor",
-    },
-    "brother-miller": {
-      name: "Brother Miller",
-      office: "MC 305",
-      phone: "208-496-5678",
-      email: "millerb@byui.edu",
-      department: "Mathematics",
-      title: "Associate Professor",
-    },
-    "brother-thompson": {
-      name: "Brother Thompson",
-      office: "MC 307",
-      phone: "208-496-6789",
-      email: "thompsonb@byui.edu",
-      department: "Mathematics",
-      title: "Assistant Professor",
-    },
-    "brother-davis": {
-      name: "Brother Davis",
-      office: "GEB 205",
-      phone: "208-496-7890",
-      email: "davisb@byui.edu",
-      department: "English",
-      title: "Professor",
-    },
-    "brother-wilson": {
-      name: "Brother Wilson",
-      office: "GEB 301",
-      phone: "208-496-8901",
-      email: "wilsonb@byui.edu",
-      department: "History",
-      title: "Associate Professor",
-    },
-    "sister-roberts": {
-      name: "Sister Roberts",
-      office: "GEB 305",
-      phone: "208-496-9012",
-      email: "robertss@byui.edu",
-      department: "History",
-      title: "Assistant Professor",
-    },
+// // Faculty data object
+// const faculty = {
+//     "brother-jack": {
+//       name: "Brother Jack",
+//       office: "STC 392",
+//       phone: "208-496-1234",
+//       email: "jackb@byui.edu",
+//       department: "Computer Science",
+//       title: "Associate Professor",
+//     },
+//     "sister-enkey": {
+//       name: "Sister Enkey",
+//       office: "STC 394",
+//       phone: "208-496-2345",
+//       email: "enkeys@byui.edu",
+//       department: "Computer Science",
+//       title: "Assistant Professor",
+//     },
+//     "brother-keers": {
+//       name: "Brother Keers",
+//       office: "STC 390",
+//       phone: "208-496-3456",
+//       email: "keersb@byui.edu",
+//       department: "Computer Science",
+//       title: "Professor",
+//     },
+//     "sister-anderson": {
+//       name: "Sister Anderson",
+//       office: "MC 301",
+//       phone: "208-496-4567",
+//       email: "andersons@byui.edu",
+//       department: "Mathematics",
+//       title: "Professor",
+//     },
+//     "brother-miller": {
+//       name: "Brother Miller",
+//       office: "MC 305",
+//       phone: "208-496-5678",
+//       email: "millerb@byui.edu",
+//       department: "Mathematics",
+//       title: "Associate Professor",
+//     },
+//     "brother-thompson": {
+//       name: "Brother Thompson",
+//       office: "MC 307",
+//       phone: "208-496-6789",
+//       email: "thompsonb@byui.edu",
+//       department: "Mathematics",
+//       title: "Assistant Professor",
+//     },
+//     "brother-davis": {
+//       name: "Brother Davis",
+//       office: "GEB 205",
+//       phone: "208-496-7890",
+//       email: "davisb@byui.edu",
+//       department: "English",
+//       title: "Professor",
+//     },
+//     "brother-wilson": {
+//       name: "Brother Wilson",
+//       office: "GEB 301",
+//       phone: "208-496-8901",
+//       email: "wilsonb@byui.edu",
+//       department: "History",
+//       title: "Associate Professor",
+//     },
+//     "sister-roberts": {
+//       name: "Sister Roberts",
+//       office: "GEB 305",
+//       phone: "208-496-9012",
+//       email: "robertss@byui.edu",
+//       department: "History",
+//       title: "Assistant Professor",
+//     },
+//   };
+  
+//   const getFacultyById = (facultyId) => {
+//     return faculty[facultyId] ? { ...faculty[facultyId], id: facultyId } : null;
+//   };
+  
+//   const getSortedFaculty = (sortBy) => {
+//     // Validate sortBy parameter
+//     const allowed = ["name", "department", "title"];
+//     const safeSort = allowed.includes(sortBy) ? sortBy : "name";
+  
+//     // Convert to array (include ID)
+//     const facultyArray = Object.keys(faculty).map((id) => ({
+//       ...faculty[id],
+//       id,
+//     }));
+  
+//     // Sort by chosen property
+//     facultyArray.sort((a, b) => a[safeSort].localeCompare(b[safeSort]));
+  
+//     return { facultyArray, safeSort };
+//   };
+  
+//   export { getFacultyById, getSortedFaculty };
+  
+import { query } from "../db.js";
+
+function toFaculty(row) {
+  return {
+    firstName: row.first_name,
+    lastName: row.last_name,
+    name: row.name,
+    slug: row.slug,
+    department: row.department,
+    title: row.title,
+    office: row.office,
+    phone: row.phone,
+    email: row.email,
   };
-  
-  const getFacultyById = (facultyId) => {
-    return faculty[facultyId] ? { ...faculty[facultyId], id: facultyId } : null;
+}
+
+export async function getSortedFaculty(sortBy = "name") {
+  const allowedSorts = {
+    name: "name",
+    department: "department",
+    title: "title",
   };
-  
-  const getSortedFaculty = (sortBy) => {
-    // Validate sortBy parameter
-    const allowed = ["name", "department", "title"];
-    const safeSort = allowed.includes(sortBy) ? sortBy : "name";
-  
-    // Convert to array (include ID)
-    const facultyArray = Object.keys(faculty).map((id) => ({
-      ...faculty[id],
-      id,
-    }));
-  
-    // Sort by chosen property
-    facultyArray.sort((a, b) => a[safeSort].localeCompare(b[safeSort]));
-  
-    return { facultyArray, safeSort };
-  };
-  
-  export { getFacultyById, getSortedFaculty };
-  
+
+  const sortColumn = allowedSorts[sortBy] || "name";
+
+  const result = await query(
+    `SELECT first_name, last_name, name, slug, department, title, office, phone, email
+     FROM faculty
+     ORDER BY ${sortColumn} ASC`
+  );
+
+  return result.rows.map(toFaculty);
+}
+
+export async function getFacultyBySlug(slug) {
+  const result = await query(
+    `SELECT first_name, last_name, name, slug, department, title, office, phone, email
+     FROM faculty
+     WHERE slug = $1
+     LIMIT 1`,
+    [slug]
+  );
+
+  if (result.rows.length === 0) return {};
+  return toFaculty(result.rows[0]);
+}

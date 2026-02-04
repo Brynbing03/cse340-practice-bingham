@@ -15,7 +15,7 @@
     <% faculty.forEach(person => { %>
       <div class="course-card">
         <h3>
-          <a href="/faculty/<%= person.id %>"><%= person.name %></a>
+          <a href="/faculty/<%= person.slug %>"><%= person.name %></a>
         </h3>
         <p class="course-id"><%= person.department %> • <%= person.title %></p>
         <p class="course-description">Office: <%= person.office %></p>
