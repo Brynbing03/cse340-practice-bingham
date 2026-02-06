@@ -109,6 +109,12 @@ OG parent
         3000 sometimes 3001
 node restore.js # # # 
 
-h
 
+PROBLEMS with css or js:
+/ root relative
+x ../ parent go up X
+x ./ "this" current dir
+
+Delete (rows)
+Drop (tables)
 
