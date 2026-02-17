@@ -1,6 +1,5 @@
-if (process.env.NODE_ENV !== "production") {
-  await import("dotenv/config");
-}
+import "dotenv/config";
+
 
 import express from "express";
 import path from "path";
