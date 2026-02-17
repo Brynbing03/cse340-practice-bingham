@@ -21,6 +21,10 @@ const app = express();
 
 // express config
 app.use(express.static(path.join(__dirname, "public")));
+//these two make it so express can receive and process POST data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src/views"));
 

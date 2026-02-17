@@ -1,3 +1,5 @@
+import contactRoutes from "./forms/contact.js";
+
 import { Router } from "express";
 
 import { addDemoHeaders } from "../middleware/demo/headers.js";
@@ -8,6 +10,26 @@ import { homePage, aboutPage, demoPage, testErrorPage, studentPage } from "./ind
 import { facultyListPage, facultyDetailPage } from "./faculty/faculty.js";
 
 const router = Router();
+
+//this adds catalog-specific styles to all catalog routes
+router.use("/catalog", (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/catalog.css">');
+    next();
+  });
+  
+  //this adds faculty-specific styles to all of the faculty routes
+  router.use("/faculty", (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/faculty.css">');
+    next();
+  });
+
+  //i added contact-specific styles to all contact routes for that contact us first form assignment
+router.use("/contact", (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/contact.css">');
+    next();
+  });
+  
+  
 
 // routes for the home and basic chill pages
 router.get("/", homePage);
@@ -28,5 +50,8 @@ router.get("/test-error", testErrorPage);
 router.get("/faculty", facultyListPage);
 router.get("/faculty/:slugId", facultyDetailPage);
 
+
+//this is the contact form routes
+router.use("/contact", contactRoutes);
 
 export default router;

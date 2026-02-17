@@ -1,7 +1,13 @@
 import { query, testConnection } from "./db.js";
+//adding these for building your first form:contact us assignment
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export async function setupDatabase() {
-  // Check if faculty table has data
+  //check if faculty table has data
   try {
     const check = await query(
       "SELECT EXISTS (SELECT 1 FROM faculty LIMIT 1) AS has_data"
@@ -77,6 +83,14 @@ export async function setupDatabase() {
       ('cse-340', 'CSE 340', 'Web Backend Development', 'Nathan Jack', 'nathan-jack', 'MWF 1:00–1:50', 'STC 349')
     ON CONFLICT DO NOTHING;
   `);
+
+  //run practice.sql if it exists (for assignment only...)
+  const practicePath = path.join(__dirname, "sql", "practice.sql");
+  if (fs.existsSync(practicePath)) {
+    const practiceSQL = fs.readFileSync(practicePath, "utf8");
+    await query(practiceSQL);
+    console.log("Practice database tables initialized");
+  }
 
   console.log("Database seeded successfully");
 }

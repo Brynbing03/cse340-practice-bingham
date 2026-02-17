@@ -1,18 +1,12 @@
-import {
-  getAllCourses,
-  getCourseBySlug,
-} from "../../models/catalog/courses.js";
-
-import {
-  getSectionsByCourseSlug,
-} from "../../models/catalog/catalog.js";
+import { getAllCourses, getCourseBySlug } from "../../models/catalog/courses.js";
+import { getSectionsByCourseSlug } from "../../models/catalog/catalog.js";
 
 // this is the route handler for the course catalog list page
 const catalogPage = async (req, res, next) => {
   try {
     const courses = await getAllCourses();
 
-    res.render("catalog", {
+    res.render("catalog/list", {
       title: "Course Catalog",
       courses,
     });
@@ -36,7 +30,7 @@ const courseDetailPage = async (req, res, next) => {
       return next(err);
     }
 
-    res.render("course-detail", {
+    res.render("catalog/detail", {
       title: `${course.courseCode} - ${course.name}`,
       course,
       sections,
