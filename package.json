@@ -8,10 +8,12 @@
     "pg": "^8.18.0"
   },
   "type": "module",
+
   "scripts": {
-    "dev": "nodemon --env-file=.env server.js",
-    "start": "node server.js"
-  },
+  "dev": "nodemon --env-file=.env server.js",
+  "start": "node --env-file=.env server.js"
+}
+,
   "devDependencies": {
     "nodemon": "^3.1.11",
     "ws": "^8.19.0"
