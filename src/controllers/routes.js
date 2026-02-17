@@ -11,6 +11,10 @@ import registrationRoutes from "./forms/registration.js";
 
 //here is my import for the faculty challenge
 import { facultyListPage, facultyDetailPage } from "./faculty/faculty.js";
+//login imports
+import loginRoutes, { processLogout, showDashboard } from "./forms/login.js";
+import { requireLogin } from "../middleware/auth.js";
+
 
 const router = Router();
 
@@ -38,6 +42,13 @@ router.use("/register", (req, res, next) => {
   next();
 });
 
+//this is for to add middleware do longin.css loads only on the login pg
+router.use("/login", (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/login.css">');
+    next();
+  });
+  
+
 // routes for the home and basic chill pages
 router.get("/", homePage);
 router.get("/about", aboutPage);
@@ -62,5 +73,11 @@ router.use("/contact", contactRoutes);
 
 //this is the registration routes
 router.use("/register", registrationRoutes);
+
+//login routes
+router.use("/login", loginRoutes);
+router.get("/logout", processLogout);
+router.get("/dashboard", requireLogin, showDashboard);
+
 
 export default router;

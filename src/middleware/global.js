@@ -5,11 +5,11 @@ const getCurrentGreeting = () => {
     if (currentHour < 18) return "Good Afternoon!";
     return "Good Evening!";
   };
-
-
-// this is express middleware that adds head asset management functionality to routes
-// it has routs for stroing css and js 
-const setHeadAssetsFunctionality = (res) => {
+  
+  
+  //this is express middleware that adds head asset management functionality to routes
+  //it has routs for stroing css and js 
+  const setHeadAssetsFunctionality = (res) => {
     res.locals.styles = [];
     res.locals.scripts = [];
   
@@ -39,16 +39,23 @@ const setHeadAssetsFunctionality = (res) => {
   
   const addLocalVariables = (req, res, next) => {
     setHeadAssetsFunctionality(res);
-//haha the current year for footer
+  
+    // convenience variable for UI state based on session state
+    res.locals.isLoggedIn = false;
+    if (req.session && req.session.user) {
+      res.locals.isLoggedIn = true;
+    }
+  
+  //haha the current year for footer
     res.locals.currentYear = new Date().getFullYear();
   
-//environment variable for templates
+  //environment variable for templates
     res.locals.NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
   
-// query parameters that are available to templates
+  // query parameters that are available to templates
     res.locals.queryParams = { ...req.query };
   
-// i wanted the greeting as plain text
+  // i wanted the greeting as plain text
     res.locals.greeting = getCurrentGreeting();
   
     //random theme class

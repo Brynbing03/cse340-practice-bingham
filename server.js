@@ -9,6 +9,14 @@ import { addLocalVariables } from "./src/middleware/global.js";
 //database setup and connection test
 import { setupDatabase, testConnection } from "./src/models/setup.js";
 
+//imports for building a login system with session management
+import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
+import { caCert } from "./src/models/db.js";
+import { startSessionCleanup } from "./src/utils/session-cleanup.js";
+
+
+
 // server config
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,6 +26,37 @@ const PORT = process.env.PORT || 3000;
 
 // setting up the express server
 const app = express();
+
+
+//for building a login system with session management assignment, i gotta keep them in order or ill be confused really bad! 
+const pgSession = connectPgSimple(session);
+
+app.use(
+  session({
+    store: new pgSession({
+      conObject: {
+        connectionString: process.env.DB_URL,
+        ssl: {
+          ca: caCert,
+          rejectUnauthorized: true,
+          checkServerIdentity: () => undefined,
+        },
+      },
+      tableName: "session",
+      createTableIfMissing: true,
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: !NODE_ENV.includes("dev"),
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  })
+);
+startSessionCleanup();
+
 
 // express config
 app.use(express.static(path.join(__dirname, "public")));
