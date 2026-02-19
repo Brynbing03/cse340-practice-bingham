@@ -40,13 +40,21 @@ const showRegistrationForm = (req, res) => {
 
 // this handles user registration with validation and pasword hashing
 const processRegistration = async (req, res) => {
-  const errors = validationResult(req);
+    console.log("POST /register received");
+    const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.error("Registration validation errors:", errors.array());
     return res.redirect("/register");
   }
 
-  const { name, email, password } = req.body;
+  const name = req.body.name?.trim();
+  const email = req.body.email?.trim().toLowerCase();
+  const password = req.body.password;
+
+  if (!name || !email || !password) {
+    console.error("Missing required registration fields");
+    return res.redirect("/register");
+  }
 
   try {
     const exists = await emailExists(email);
@@ -57,8 +65,8 @@ const processRegistration = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await saveUser(name, email, hashedPassword);
-    console.log("User registered successfully");
+    const newUser = await saveUser(name, email, hashedPassword);
+    console.log("User registered successfully:", { id: newUser.id, email: newUser.email });
     return res.redirect("/register/list");
   } catch (error) {
     console.error("Error registering user:", error);

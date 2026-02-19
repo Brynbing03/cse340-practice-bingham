@@ -15,7 +15,6 @@ import { facultyListPage, facultyDetailPage } from "./faculty/faculty.js";
 import loginRoutes, { processLogout, showDashboard } from "./forms/login.js";
 import { requireLogin } from "../middleware/auth.js";
 
-
 const router = Router();
 
 //this adds catalog-specific styles to all catalog routes
@@ -44,10 +43,9 @@ router.use("/register", (req, res, next) => {
 
 //this is for to add middleware do longin.css loads only on the login pg
 router.use("/login", (req, res, next) => {
-    res.addStyle('<link rel="stylesheet" href="/css/login.css">');
-    next();
-  });
-  
+  res.addStyle('<link rel="stylesheet" href="/css/login.css">');
+  next();
+});
 
 // routes for the home and basic chill pages
 router.get("/", homePage);
@@ -78,6 +76,5 @@ router.use("/register", registrationRoutes);
 router.use("/login", loginRoutes);
 router.get("/logout", processLogout);
 router.get("/dashboard", requireLogin, showDashboard);
-
 
 export default router;

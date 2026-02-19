@@ -35,13 +35,13 @@ const processLogin = async (req, res) => {
     const user = await findUserByEmail(email);
 
     if (!user) {
-      console.log("User not found");
+      console.log("User not found:", email);
       return res.redirect("/login");
     }
 
     const valid = await verifyPassword(password, user.password);
     if (!valid) {
-      console.log("Invalid password");
+      console.log("Invalid password for:", email);
       return res.redirect("/login");
     }
 
@@ -50,7 +50,15 @@ const processLogin = async (req, res) => {
 
     req.session.user = user;
 
-    return res.redirect("/dashboard");
+    // make sure session is saved before redirect (helps with DB session stores)
+    req.session.save((err) => {
+      if (err) {
+        console.error("Error saving session:", err);
+        return res.redirect("/login");
+      }
+      console.log("Login success, session saved for:", email);
+      return res.redirect("/dashboard");
+    });
   } catch (error) {
     console.error("Error processing login:", error);
     return res.redirect("/login");

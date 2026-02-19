@@ -19,8 +19,6 @@ import connectPgSimple from "connect-pg-simple";
 import { caCert } from "./src/models/db.js";
 import { startSessionCleanup } from "./src/utils/session-cleanup.js";
 
-
-
 // server config
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,12 +26,10 @@ const __dirname = path.dirname(__filename);
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 const PORT = process.env.PORT || 3000;
 
-
 // setting up the express server
 const app = express();
 
-
-//for building a login system with session management assignment, i gotta keep them in order or ill be confused really bad! 
+//for building a login system with session management assignment, i gotta keep them in order or ill be confused really bad!
 const pgSession = connectPgSimple(session);
 
 app.use(
@@ -54,14 +50,15 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: !NODE_ENV.includes("dev"),
+      secure: NODE_ENV.includes("dev") !== true,
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );
-startSessionCleanup();
 
+// Start automatic session cleanup
+startSessionCleanup();
 
 // express config
 app.use(express.static(path.join(__dirname, "public")));
@@ -106,7 +103,9 @@ app.use((err, req, res, next) => {
     res.status(status).render(`errors/${template}`, context);
   } catch (renderErr) {
     if (!res.headersSent) {
-      res.status(status).send(`<h1>Error ${status}</h1><p>An error occurred.</p>`);
+      res
+        .status(status)
+        .send(`<h1>Error ${status}</h1><p>An error occurred.</p>`);
     }
   }
 });
