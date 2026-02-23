@@ -29,6 +29,9 @@ const PORT = process.env.PORT || 3000;
 // setting up the express server
 const app = express();
 
+// ✅ IMPORTANT for Render/any reverse proxy (needed for secure cookies + correct req protocol)
+app.set("trust proxy", 1);
+
 //for building a login system with session management assignment, i gotta keep them in order or ill be confused really bad!
 const pgSession = connectPgSimple(session);
 
@@ -50,6 +53,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
+      // In production this becomes true, and trust proxy above makes it work correctly on Render.
       secure: NODE_ENV.includes("dev") !== true,
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
