@@ -1,120 +1,233 @@
-/* some layout and spacing stuff, little different fonts*/
-   html,
-   body {
-     background-color: #e7e3d8;
-     font-family: "Inter", "Segoe UI", Arial, sans-serif;
-     margin: 0;
-     padding: 0;
-     color: #3a342e;
-   }
-   
-/* trying out some certer spacing and thing idk if i like it all the way */
+/* some layout and spacing stuff, little different fonts */
+:root {
+  --bg: #e7e3d8;
+  --text: #3a342e;
+
+  --panel: #f5f1e8;
+  --card: #ffffff;
+
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  --shadow-soft: 0 6px 20px rgba(0, 0, 0, 0.06);
+
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  --max: 1100px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: var(--bg);
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+}
+
+/* trying out some center spacing and thing idk if i like it all the way */
 main {
-     max-width: 1000px;
-     margin: 2rem auto;
-     padding: 0 2rem;
-   }
-   
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1.25rem;
+}
+
 /* header and nav thingz */
-   header {
-     max-width: 1100px;
-     margin: 1.5rem auto 1rem;
-     background: #f5f1e8;
-     border-radius: 18px;
-     margin-left: 25px;
-     margin-right: 25px;
-     padding: 1rem 1.75rem;
-     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-   
-     nav {
-       ul {
-         list-style: none;
-         display: flex;
-         flex-wrap: wrap;
-         gap: 1rem;
-         padding: 0;
-         margin: 0;
-         justify-content: center;
-       }
-   
-       a {
-         padding: 0.45rem 1rem;
-         border-radius: 999px;
-         text-decoration: none;
-         font-weight: 600;
-         color: #4a433c;
-         transition: all 0.2s ease;
-   
-         &:hover {
-           background: #ded6c5;
-         }
-       }
-     }
-   }
-   
-/* the greeting bubble saying good morning, afternoon or evening! might chang this. idk if i like it...  */  
-   .greeting-wrapper {
-     max-width: 1100px;
-     margin: 0 auto 1.5rem;
-     padding: 0 2rem;
-     text-align: center;
-   }
-   
-   .greeting {
-     display: inline-block;
-     background: #ded6c5;
-     padding: 0.5rem 1.25rem;
-     border-radius: 999px;
-     font-size: 0.95rem;
-     font-weight: 500;
-   }
-   
-/* the cards that are kinda bubbly */
-   .card,
-   .course-card,
-   .section-card,
-   .demo-section {
-     background: #ffffff;
-     border-radius: 20px;
-     padding: 1.5rem;
-     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-   }
-   
-/* the course catalog spacing a little bit */
-   .course-list {
-     display: grid;
-     gap: 2rem;
-   
-/* this goes to the middleware spacing */
-   .demo-section {
-     margin-bottom: 2rem;
-   
-/* typography stuff */
-   h1,
-   h2,
-   h3 {
-     color: #3f372f;
-     margin-top: 0;
-   }
-   
-   p {
-     line-height: 1.6;
-   }
-   
-/* footer stylin */
-   footer {
-     margin: 3rem auto 2rem;
-     text-align: center;
-     color: #6a625a;
-     font-size: 0.9rem;
-   }
-   
-/* course details part */
-   .section-list {
-    display: grid;
-    gap: 1.25rem;
+header {
+  max-width: var(--max);
+  margin: 1.5rem auto 1rem;
+  background: var(--panel);
+  border-radius: 18px;
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-soft);
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+}
+
+header nav a {
+  display: inline-block;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  font-weight: 650;
+  color: #4a433c;
+  background: transparent;
+  border: 1px solid rgba(74, 67, 60, 0.12);
+  transition: background-color 0.15s ease, transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+header nav a:hover {
+  background: #ded6c5;
+  border-color: rgba(74, 67, 60, 0.18);
+  transform: translateY(-1px);
+}
+
+/* make pages feel a little tighter on small screens */
+@media (max-width: 600px) {
+  header {
+    margin: 1rem auto 0.75rem;
+    padding: 0.9rem 0.9rem;
   }
-  
+
+  header nav ul {
+    gap: 0.6rem;
+  }
+
+  header nav a {
+    padding: 0.4rem 0.85rem;
+    font-weight: 600;
+  }
+
+  main {
+    margin: 1.25rem auto;
+    padding: 0 1rem;
+  }
+}
+
+/* flash messages */
+.flash-messages {
+  max-width: var(--max);
+  margin: 0.75rem auto 0;
+  padding: 0 1.25rem;
+}
+
+.flash {
+  padding: 0.95rem 1.1rem;
+  margin: 0.75rem 0;
+  border-radius: 12px;
+  border-left: 5px solid;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.flash.success {
+  background-color: #d4edda;
+  border-color: #28a745;
+  color: #155724;
+}
+
+.flash.error {
+  background-color: #f8d7da;
+  border-color: #dc3545;
+  color: #721c24;
+}
+
+.flash.warning {
+  background-color: #fff3cd;
+  border-color: #ffc107;
+  color: #856404;
+}
+
+.flash.info {
+  background-color: #d1ecf1;
+  border-color: #17a2b8;
+  color: #0c5460;
+}
+
+/* the greeting bubble saying good morning, afternoon or evening! might change this. idk if i like it... */
+.greeting-wrapper {
+  max-width: var(--max);
+  margin: 0 auto 1.25rem;
+  padding: 0 1.25rem;
+  text-align: center;
+}
+
+.greeting {
+  display: inline-block;
+  background: #ded6c5;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* the cards that are kinda bubbly */
+.card,
+.course-card,
+.section-card,
+.demo-section {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+/* typography stuff */
+h1,
+h2,
+h3 {
+  color: #3f372f;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+h2 {
+  font-size: 1.35rem;
+  margin-bottom: 0.6rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  line-height: 1.6;
+}
+
+/* course catalog spacing a little bit */
+.course-list {
+  display: grid;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+/* this goes to the middleware spacing */
+.demo-section {
+  margin-bottom: 2rem;
+}
+
+/* footer stylin */
+footer {
+  margin: 3rem auto 2rem;
+  text-align: center;
+  color: #6a625a;
+  font-size: 0.9rem;
+  padding: 0 1rem;
+}
+
+/* course details part */
+.section-list {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
 /* making the catalog course part look better... */
 .section-card {
   display: flex;
@@ -124,9 +237,11 @@ main {
   margin-top: 20px;
   border-radius: 18px;
   background: #ffffff;
+  border: 1px solid rgba(63, 55, 47, 0.08);
 }
+
 .section-time {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1.05rem;
   color: #5a4632;
 }
@@ -135,4 +250,40 @@ main {
 .section-professor {
   font-size: 0.95rem;
   color: #6a5a48;
+}
+
+/* a little nicer default look for forms/buttons if you have them */
+input,
+select,
+textarea {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.7rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid rgba(58, 52, 46, 0.18);
+  background: #fff;
+  font: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(90, 70, 50, 0.45);
+  box-shadow: 0 0 0 4px rgba(222, 214, 197, 0.6);
+}
+
+button {
+  padding: 0.65rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(58, 52, 46, 0.18);
+  background: #ded6c5;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+button:hover {
+  background: #d3cab6;
+  transform: translateY(-1px);
 }
