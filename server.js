@@ -10,6 +10,9 @@ import { fileURLToPath } from "url";
 import routes from "./src/controllers/routes.js";
 import { addLocalVariables } from "./src/middleware/global.js";
 
+// flash middleware
+import flash from "./src/middleware/flash.js";
+
 //database setup and connection test
 import { setupDatabase, testConnection } from "./src/models/setup.js";
 
@@ -75,6 +78,9 @@ app.set("views", path.join(__dirname, "src/views"));
 
 //global middleware
 app.use(addLocalVariables);
+
+// flash message middleware (must come after session + global middleware)
+app.use(flash);
 
 //routes
 app.use("/", routes);
