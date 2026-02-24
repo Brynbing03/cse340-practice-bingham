@@ -5,7 +5,7 @@ import { emailExists, saveUser, getAllUsers } from "../../models/forms/registrat
 
 const router = Router();
 
-// these are the RULES! for user registration 
+// these are the RULES! for user registration
 const registrationValidation = [
   body("name")
     .trim()
@@ -34,16 +34,21 @@ const registrationValidation = [
 
 // this is the registration form page heck yeah
 const showRegistrationForm = (req, res) => {
-  res.render("forms/registration/form", { 
-    title: "User Registration" });
+  res.render("forms/registration/form", {
+    title: "User Registration",
+  });
 };
 
 // this handles user registration with validation and pasword hashing
 const processRegistration = async (req, res) => {
-    console.log("POST /register received");
-    const errors = validationResult(req);
+  console.log("POST /register received");
+
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.error("Registration validation errors:", errors.array());
+    // show each validation error to the user
+    errors.array().forEach((error) => {
+      req.flash("error", error.msg);
+    });
     return res.redirect("/register");
   }
 
@@ -53,23 +58,35 @@ const processRegistration = async (req, res) => {
 
   if (!name || !email || !password) {
     console.error("Missing required registration fields");
+    req.flash("error", "Please fill out all required fields.");
     return res.redirect("/register");
   }
 
   try {
     const exists = await emailExists(email);
     if (exists) {
-      console.log("Email already registered");
+      // not an error exactly, but the user needs to know
+      req.flash(
+        "warning",
+        "An account with that email already exists. Try logging in instead."
+      );
       return res.redirect("/register");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await saveUser(name, email, hashedPassword);
-    console.log("User registered successfully:", { id: newUser.id, email: newUser.email });
-    return res.redirect("/register/list");
+    console.log("User registered successfully:", {
+      id: newUser.id,
+      email: newUser.email,
+    });
+
+    // success message + redirect to login (so everyone can see it)
+    req.flash("success", "Registration complete! You can now log in.");
+    return res.redirect("/login");
   } catch (error) {
     console.error("Error registering user:", error);
+    req.flash("error", "Unable to register right now. Please try again later.");
     return res.redirect("/register");
   }
 };

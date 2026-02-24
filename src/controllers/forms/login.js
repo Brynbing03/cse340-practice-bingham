@@ -4,7 +4,7 @@ import { Router } from "express";
 
 const router = Router();
 
-//these are the validatio rules for the login form 
+//these are the validatio rules for the login form
 const loginValidation = [
   body("email")
     .trim()
@@ -21,11 +21,14 @@ const showLoginForm = (req, res) => {
   });
 };
 
-//this works it and processes the login form submision from the user 
+//this works it and processes the login form submision from the user
 const processLogin = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.error("Login validation errors:", errors.array());
+    // show each validation error to the user
+    errors.array().forEach((error) => {
+      req.flash("error", error.msg);
+    });
     return res.redirect("/login");
   }
 
@@ -34,14 +37,16 @@ const processLogin = async (req, res) => {
   try {
     const user = await findUserByEmail(email);
 
+    // security: do not reveal if email exists or not
     if (!user) {
-      console.log("User not found:", email);
+      req.flash("error", "Invalid email or password");
       return res.redirect("/login");
     }
 
     const valid = await verifyPassword(password, user.password);
+    // security: same exact message for wrong password
     if (!valid) {
-      console.log("Invalid password for:", email);
+      req.flash("error", "Invalid email or password");
       return res.redirect("/login");
     }
 
@@ -54,13 +59,18 @@ const processLogin = async (req, res) => {
     req.session.save((err) => {
       if (err) {
         console.error("Error saving session:", err);
+        req.flash("error", "Login failed. Please try again.");
         return res.redirect("/login");
       }
-      console.log("Login success, session saved for:", email);
+
+      // success message (personalized)
+      const name = user.name || "there";
+      req.flash("success", `Welcome back, ${name}!`);
       return res.redirect("/dashboard");
     });
   } catch (error) {
     console.error("Error processing login:", error);
+    req.flash("error", "Unable to log in right now. Please try again later.");
     return res.redirect("/login");
   }
 };
@@ -79,6 +89,9 @@ const processLogout = (req, res) => {
     }
 
     res.clearCookie("connect.sid");
+
+    // optional but super nice: confirm logout worked
+    req.flash("success", "You have been logged out.");
     res.redirect("/");
   });
 };
