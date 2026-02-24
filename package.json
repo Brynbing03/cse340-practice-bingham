@@ -2,7 +2,7 @@
   "name": "cse340-practice-bingham",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --env-file=.env server.js",
+"dev": "NODE_ENV=development nodemon --env-file=.env server.js",
     "start": "node -r dotenv/config server.js"
   },
   "dependencies": {
