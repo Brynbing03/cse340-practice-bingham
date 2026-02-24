@@ -6,13 +6,13 @@
   <% if (users && users.length > 0) { %>
     <div class="users-list">
       <% users.forEach(user => { %>
-        <div class="user-card">
-          <div class="user-header">
-            <h3><%= user.name %></h3>
-            <span class="user-id">ID: <%= user.id %></span>
-          </div>
+          <div class="user-card">
+            <div class="user-header">
+              <h3><%= user.name %></h3>
+              <span class="user-id">ID: <%= user.id %></span>
+            </div>
 
-          <div class="user-details">
+        <div class="user-details">
             <div class="detail-item">
               <div class="label">Email</div>
               <div class="value"><%= user.email %></div>

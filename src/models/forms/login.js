@@ -1,15 +1,25 @@
 import bcrypt from "bcrypt";
 import { query } from "../db.js";
+
 /**
- * // this finds a user by email for login verification 
+ * this finds a user by email for login verification
+ * now also joins roles so we get roleName
+ *
  * @param {string} email this is the email address to search for
  * @returns {Promise<Object|null>} user object with password hash or null if not found
  */
 const findUserByEmail = async (email) => {
   const sql = `
-    SELECT id, name, email, password, created_at
+    SELECT 
+      users.id,
+      users.name,
+      users.email,
+      users.password,
+      users.created_at,
+      roles.role_name AS "roleName"
     FROM users
-    WHERE LOWER(email) = LOWER($1)
+    INNER JOIN roles ON users.role_id = roles.id
+    WHERE LOWER(users.email) = LOWER($1)
     LIMIT 1
   `;
 
