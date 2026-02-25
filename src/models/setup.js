@@ -61,8 +61,8 @@ export async function setupDatabase() {
     INSERT INTO faculty (first_name, last_name, name, slug, department, title, office, phone, email)
     VALUES
       ('Nathan', 'Jack', 'Nathan Jack', 'nathan-jack', 'Computer Science', 'Associate Professor', 'STC 392', '208-496-1234', 'jackb@byui.edu'),
-      ('Sarah', 'Enkey', 'Sarah Enkey', 'sarah-enkey', 'Computer Science', 'Assistant Professor', 'STC 394', '208-496-2345', 'enkeys@byui.edu'),
-      ('Brad', 'Keers', 'Brad Keers', 'brad-keers', 'Computer Science', 'Professor', 'STC 390', '208-496-3456', 'keersb@byui.edu')
+      ('Sarah', 'Enkey', 'Sarah Enkey', 'elaine-wagner', 'Computer Science', 'Assistant Professor', 'STC 394', '208-496-2345', 'enkeys@byui.edu'),
+      ('Brad', 'Keers', 'Brad Keers', 'christopher-keers', 'Computer Science', 'Professor', 'STC 390', '208-496-3456', 'keersb@byui.edu')
     ON CONFLICT DO NOTHING;
   `);
 
@@ -79,7 +79,7 @@ export async function setupDatabase() {
     INSERT INTO sections (course_slug, course_code, course_name, professor, professor_slug, time, room)
     VALUES
       ('cse-110', 'CSE 110', 'Introduction to Programming', 'Nathan Jack', 'nathan-jack', 'MWF 10:00–10:50', 'STC 353'),
-      ('cse-110', 'CSE 110', 'Introduction to Programming', 'Brad Keers', 'brad-keers', 'TR 12:30–1:45', 'STC 355'),
+      ('cse-110', 'CSE 110', 'Introduction to Programming', 'Brad Keers', 'christopher-keers', 'TR 12:30–1:45', 'STC 355'),
       ('cse-340', 'CSE 340', 'Web Backend Development', 'Nathan Jack', 'nathan-jack', 'MWF 1:00–1:50', 'STC 349')
     ON CONFLICT DO NOTHING;
   `);

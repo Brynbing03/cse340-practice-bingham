@@ -1,0 +1,62 @@
+/* faculty cards */
+.faculty-card {
+    position: relative;
+  }
+  
+  /* list page image */
+  .faculty-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background: url('https://placehold.co/480') center / cover no-repeat;
+  }
+  
+  /* detail layout */
+  .faculty-detail-header {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .faculty-detail-photo {
+    width: 220px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 18px;
+    background: url('https://placehold.co/480') center / cover no-repeat;
+  }
+
+  /* the detail page layout */
+.faculty-detail-header {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  /* detail pg img */
+  .faculty-detail-photo {
+    width: 220px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 18px;
+    background: url("https://placehold.co/480") center / cover no-repeat;
+    flex-shrink: 0;
+  }
+  
+  /* stacking faculty on top of eachother  */
+  @media (max-width: 768px) {
+    .faculty-detail-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .faculty-detail-photo {
+      width: 100%;
+      max-width: 300px;
+    }
+  }

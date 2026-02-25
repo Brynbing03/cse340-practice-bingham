@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body, validationResult } from "express-validator";
+import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 
 import {
@@ -12,82 +12,27 @@ import {
 } from "../../models/forms/registration.js";
 
 import { requireLogin } from "../../middleware/auth.js";
+import {
+  registrationValidation,
+  updateAccountValidation,
+} from "../../middleware/validation/forms.js";
 
 const router = Router();
 
-// these are the RULES! for user registration
-const registrationValidation = [
-  body("name")
-    .trim()
-    .isLength({ min: 2, max: 100 })
-    .withMessage("Name must be between 2 and 100 characters")
-    .matches(/^[a-zA-Z\s'-]+$/)
-    .withMessage("Name can only contain letters, spaces, hyphens, and apostrophes"),
-
-  body("email")
-    .trim()
-    .isEmail()
-    .normalizeEmail()
-    .withMessage("Must be a valid email address")
-    .isLength({ max: 255 })
-    .withMessage("Email address is too long"),
-
-  body("emailConfirm")
-    .trim()
-    .custom((value, { req }) => value === req.body.email)
-    .withMessage("Email addresses must match"),
-
-  body("password")
-    .isLength({ min: 8, max: 128 })
-    .withMessage("Password must be between 8 and 128 characters")
-    .matches(/[0-9]/)
-    .withMessage("Password must contain at least one number")
-    .matches(/[a-z]/)
-    .withMessage("Password must contain at least one lowercase letter")
-    .matches(/[A-Z]/)
-    .withMessage("Password must contain at least one uppercase letter")
-    .matches(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)
-    .withMessage("Password must contain at least one special character"),
-
-  body("passwordConfirm")
-    .custom((value, { req }) => value === req.body.password)
-    .withMessage("Passwords must match"),
-];
-
-// validation rules for editing user accounts
-const editValidation = [
-  body("name")
-    .trim()
-    .isLength({ min: 2, max: 100 })
-    .withMessage("Name must be between 2 and 100 characters")
-    .matches(/^[a-zA-Z\s'-]+$/)
-    .withMessage("Name can only contain letters, spaces, hyphens, and apostrophes"),
-
-  body("email")
-    .trim()
-    .isEmail()
-    .normalizeEmail()
-    .withMessage("Must be a valid email address")
-    .isLength({ max: 255 })
-    .withMessage("Email address is too long"),
-];
-
-// this is the registration form page heck yeah
+// this is the registration form page
 const showRegistrationForm = (req, res) => {
   res.render("forms/registration/form", {
     title: "User Registration",
   });
 };
 
-// this handles user registration with validation and password hashing
+// this handles user registration with validation + password hashing
 const processRegistration = async (req, res) => {
   console.log("POST /register received");
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    errors.array().forEach((error) => {
-      req.flash("error", error.msg);
-    });
+    errors.array().forEach((error) => req.flash("error", error.msg));
     return res.redirect("/register");
   }
 
@@ -112,8 +57,8 @@ const processRegistration = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = await saveUser(name, email, hashedPassword);
+
     console.log("User registered successfully:", {
       id: newUser.id,
       email: newUser.email,
@@ -128,7 +73,7 @@ const processRegistration = async (req, res) => {
   }
 };
 
-// this displays all of the registered users
+// show all registered users
 const showAllUsers = async (req, res) => {
   let users = [];
   try {
@@ -143,8 +88,8 @@ const showAllUsers = async (req, res) => {
     user: req.session && req.session.user ? req.session.user : null,
   });
 };
-// display the edit account form
-// users can edit their own account, admins can edit any account
+
+// show edit account form
 const showEditAccountForm = async (req, res) => {
   const targetUserId = parseInt(req.params.id, 10);
   const currentUser = req.session.user;
@@ -169,15 +114,11 @@ const showEditAccountForm = async (req, res) => {
   });
 };
 
-/**
- * process account edit form submission
- */
+// process edit account
 const processEditAccount = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    errors.array().forEach((error) => {
-      req.flash("error", error.msg);
-    });
+    errors.array().forEach((error) => req.flash("error", error.msg));
     return res.redirect(`/register/${req.params.id}/edit`);
   }
 
@@ -222,10 +163,7 @@ const processEditAccount = async (req, res) => {
   }
 };
 
-/**
- * process account deletion
- * only admins can delete accounts, and they cannot delete themselves
- */
+// process delete account
 const processDeleteAccount = async (req, res) => {
   const targetUserId = parseInt(req.params.id, 10);
   const currentUser = req.session.user;
@@ -242,11 +180,8 @@ const processDeleteAccount = async (req, res) => {
 
   try {
     const deleted = await deleteUser(targetUserId);
-    if (deleted) {
-      req.flash("success", "User account deleted successfully.");
-    } else {
-      req.flash("error", "User not found or already deleted.");
-    }
+    if (deleted) req.flash("success", "User account deleted successfully.");
+    else req.flash("error", "User not found or already deleted.");
   } catch (error) {
     console.error("Error deleting user:", error);
     req.flash("error", "An error occurred while deleting the account.");
@@ -255,17 +190,15 @@ const processDeleteAccount = async (req, res) => {
   return res.redirect("/register/list");
 };
 
-//these are the routes
+// routes
 router.get("/", showRegistrationForm);
 router.post("/", registrationValidation, processRegistration);
 
 router.get("/list", showAllUsers);
 
-// edit routes (protected)
 router.get("/:id/edit", requireLogin, showEditAccountForm);
-router.post("/:id/edit", requireLogin, editValidation, processEditAccount);
+router.post("/:id/edit", requireLogin, updateAccountValidation, processEditAccount);
 
-// delete route (protected)
 router.post("/:id/delete", requireLogin, processDeleteAccount);
 
 export default router;
